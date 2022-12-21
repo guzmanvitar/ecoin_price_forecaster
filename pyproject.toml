@@ -18,6 +18,15 @@ ipykernel = "^6.19.4"
 isort = "^5.11.3"
 flake8 = "^6.0.0"
 
+[tool.black]
+line-length = 100
+preview = true
+
+[tool.isort]
+atomic = true
+profile = "black"
+skip = [".venv"]
+
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
