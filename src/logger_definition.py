@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from ml_project_template.constants import LOGS
+from src.constants import LOGS
 
 # Spawn formatter and handler as a singleton to avoid repeated logs if calling `get_logger` from
 # multiple modules

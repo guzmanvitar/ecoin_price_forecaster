@@ -1,6 +1,6 @@
-# ml_project_template
+# Guzman's Mutt Data Exam
 
-Repo template for Machine Learning projects.
+Guzman Vitar's exam for the Mutt Data selection process.
 
 ## Getting started
 
@@ -75,6 +75,3 @@ Main folder and file structure for the project.
     └── .pre-commit-config <- File to setup git pre commit hooks.
 
 ```
-
----
-Partially adapted from Cookie Cutter Data Science and from Tryolab's `project-base` template.
