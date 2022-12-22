@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "ml-project-template"
+name = "mutt-data-exam"
 version = "0.1.0"
-description = "Base git configuration for ML projects"
+description = "Guzman Vitar's Mutt Data exam"
 authors = ["guzmanvitar <guzmanvitar@gmail.com>"]
 
 [tool.poetry.dependencies]
