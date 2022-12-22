@@ -5,6 +5,7 @@ Guzman Vitar's exam for the Mutt Data selection process.
 ## Getting started
 
 ### Installing virtual environments and getting dependencies
+
 1. *Poetry*
 
 Before you start to code, we'll need to set up a virtual environment to handle the project dependencies separately
@@ -41,6 +42,7 @@ To initialize just run
 ```
 
 ## Project Organization
+
 Main folder and file structure for the project.
 ```
     ├── README.md          <- The top-level README for developers using this project.
@@ -76,17 +78,28 @@ Main folder and file structure for the project.
 
 ```
 ## The challenge
+
 1. Coingecko crawler
 
 For the crawler logic we're going in all guns a'blazing, using `scrapy` to get the data from the API.
-I know, it's a bit of an overkill, but it solves the storage and update of the data further down the
-line, and it scales really nice to more complex tasks.
+I know, it's a bit of an overkill, but it solves the storage and bulk processing of the data further down the
+line, it also supports concurrent processing, and it generally scales really well to more complex tasks.
 
 Scrapy crawler logic is in the `src.crawler` module, which uses. The root of the `scrapy` project is the project's root directory. All `scrapy` commands should be run from there.
 
-The preferred way to run spiders is from `src/crawler/crawl.py`. The file supports command line arguments
-for coin identifiers, start date and end date (if no end is provided, only one date is scraped). For example, to get the data for bitcoin and ethereum, for the date "30-12-2017", run
+The preferred way to run spiders is from `src/crawler/crawl.py`. The script supports command line arguments for
+coin identifier, start date and end date. If no end is provided, only one date is scraped, if not, the full range of dates is extracted. For example, to get the data for bitcoin, between the dates "15-12-2017" and "30-12-2017", run
 ```python
-python src/crawler/crawl.py --coin_ids bitcoin ethereum --start_date "30-12-2017"
+python src/crawler/crawl.py --coin_id bitcoin --start_date "15-12-2017" --end_date "30-12-2017"
 ```
-Please check the crawl script's `--help` for more information.
+Check the crawl script's `--help` for more information.
+
+2. Database setup
+
+We are using sqlalchemy to define the postgres database, and docker/ docker compose to run the db and orquestrate the crawler with the storage.
+
+At this point we just need to enable scrapy pipelines to populate our database directly with the items we scrape. Mind you, as
+the database is generated through docker compose, in order for this part to work, you'll need to run on docker compose (as
+oposed to your poetry environment).
+
+Run `docker compose up`, you can then run the scraping script from last section in the python container.

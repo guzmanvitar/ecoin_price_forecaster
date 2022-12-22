@@ -8,35 +8,27 @@ for usage help.
 import argparse
 
 from scrapy.crawler import CrawlerProcess
-from scrapy.spiderloader import SpiderLoader
-from scrapy.utils.project import get_project_settings
+
+from src.crawler.settings import CONCURRENT_REQUESTS, ITEM_PIPELINES, ROBOTSTXT_OBEY
+from src.crawler.spiders.coingecko_spider import CoingeckoSpider
+from src.logger_definition import get_logger
+
+logger = get_logger(__file__)
+
 
 # https://docs.scrapy.org/en/latest/topics/practices.html#run-scrapy-from-a-script
 # https://docs.scrapy.org/en/latest/topics/api.html#scrapy.crawler.CrawlerProcess
 
 if __name__ == "__main__":
-    settings = get_project_settings()
-
-    spiders = SpiderLoader(settings).list()
-
     parser = argparse.ArgumentParser("crawler")
 
     parser.add_argument(
-        "--spiders",
-        nargs="*",
-        default=spiders,
-        choices=spiders,
-        help="Spiders to crawl. By default, use all spiders discoverable by scrapy's SpiderLoader.",
-    )
-
-    parser.add_argument(
+        # TODO: incorporate list of strings as argument to crawl various coins in one run
         "-c",
-        "--coin_ids",
-        nargs="+",
+        "--coin_id",
         required=True,
-        type=str,
         choices=["bitcoin", "ethereum", "cardano"],
-        help="List of coin ids to scrape",
+        help="Coin id to scrape",
     )
 
     parser.add_argument(
@@ -57,9 +49,19 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    process = CrawlerProcess(settings, install_root_handler=False)
-    for spider in args.spiders:
-        process.crawl(
-            spider, coin_ids=args.coin_ids, start_date=args.start_date, end_date=args.end_date
-        )
+    process = CrawlerProcess(
+        # TODO: debug automatic import from settings
+        settings={
+            "CONCURRENT_REQUESTS": CONCURRENT_REQUESTS,
+            "ITEM_PIPELINES": ITEM_PIPELINES,
+            "ROBOTSTXT_OBEY": ROBOTSTXT_OBEY,
+        }
+    )
+    process.crawl(
+        CoingeckoSpider,
+        coin_id=args.coin_id,
+        start_date=args.start_date,
+        end_date=args.end_date,
+    )
+    logger.info(f"Launching crawl for {CoingeckoSpider.name} spiders")
     process.start()

@@ -11,13 +11,11 @@ class CoingeckoSpider(scrapy.Spider):
     # Scraper attributes
     name = "coingecko_spider"
 
-    def __init__(self, coin_ids: list[str], start_date: str, end_date: str | None = None):
-        if not coin_ids:
+    def __init__(self, coin_id: str, start_date: str, end_date: str | None = None):
+        if not coin_id:
             raise ValueError("Coin ids parameter can't be null")
-        elif not isinstance("bitcoin", list):
-            self.coin_ids = [coin_ids]
         else:
-            self.coin_ids = coin_ids
+            self.coin_ids = [coin_id]
 
         if not start_date:
             raise ValueError("Start date parameter can't be null")
@@ -29,21 +27,27 @@ class CoingeckoSpider(scrapy.Spider):
         else:
             self.end_date = datetime.strptime(end_date, DATE_FORMAT).date()
 
+        self.logger.logger.name = f"crawler.{CoingeckoSpider.name}"
+
     def start_requests(self):
         delta_dates = (self.end_date - self.start_date).days
 
         date_range = [self.start_date + timedelta(days=i) for i in range(delta_dates + 1)]
-        date_range_str = [date.strftime(DATE_FORMAT) for date in date_range]
 
         crawl_list = [
             (
-                f"https://api.coingecko.com/api/v3/coins/{coin_id}/history?date={str_date}",
+                (
+                    f"https://api.coingecko.com/api/v3/coins/{coin_id}/"
+                    f"history?date={date.strftime(DATE_FORMAT) }"
+                ),
                 coin_id,
-                str_date,
+                date,
             )
             for coin_id in self.coin_ids
-            for str_date in date_range_str
+            for date in date_range
         ]
+
+        self.logger.info(f"Preparing to scrape {len(crawl_list)} registries.")
 
         for url, coin_id, date in crawl_list:
             yield scrapy.Request(
