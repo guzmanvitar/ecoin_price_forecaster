@@ -6,7 +6,11 @@
 import scrapy
 
 
-class CrawlerItem(scrapy.Item):
+class CoingeckoItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    coin_id = scrapy.Field()
+    scraped_date = scrapy.Field()
+    currency = scrapy.Field()
+    current_price = scrapy.Field()
+    market_cap = scrapy.Field()
+    total_volume = scrapy.Field()
