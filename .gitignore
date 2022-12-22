@@ -97,7 +97,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env*
 .venv*
 venv/
 ENV*
@@ -132,3 +131,8 @@ cython_debug/
 /data/
 /logs/
 /reports/
+
+# airflow
+dag_processor_manager
+logs
+plugins
