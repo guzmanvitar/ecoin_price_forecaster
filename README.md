@@ -75,3 +75,18 @@ Main folder and file structure for the project.
     └── .pre-commit-config <- File to setup git pre commit hooks.
 
 ```
+## The challenge
+1. Coingecko crawler
+
+For the crawler logic we're going in all guns a'blazing, using `scrapy` to get the data from the API.
+I know, it's a bit of an overkill, but it solves the storage and update of the data further down the
+line, and it scales really nice to more complex tasks.
+
+Scrapy crawler logic is in the `src.crawler` module, which uses. The root of the `scrapy` project is the project's root directory. All `scrapy` commands should be run from there.
+
+The preferred way to run spiders is from `src/crawler/crawl.py`. The file supports command line arguments
+for coin identifiers, start date and end date (if no end is provided, only one date is scraped). For example, to get the data for bitcoin and ethereum, for the date "30-12-2017", run
+```python
+python src/crawler/crawl.py --coin_ids bitcoin ethereum --start_date "30-12-2017"
+```
+Please check the crawl script's `--help` for more information.
