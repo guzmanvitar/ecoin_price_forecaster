@@ -71,7 +71,7 @@ class CoingeckoSpider(scrapy.Spider):
         item = CoingeckoItem()
 
         item["coin_id"] = response.meta["coin_id"]
-        item["scraped_date"] = response.meta["date"]
+        item["date"] = response.meta["date"]
         item["currency"] = "usd"
         item["current_price"] = current_price
         item["market_cap"] = market_cap
