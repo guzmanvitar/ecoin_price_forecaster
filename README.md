@@ -4,10 +4,13 @@ Repo template for Machine Learning projects.
 
 ## Getting started
 
-### Installing a virtual environment and getting dependencies
-In order to set up the project, a virtual environment will be set up to handle the project dependencies without touching your system Python's packages.
+### Installing virtual environments and getting dependencies
+1. Poetry
+Before you start to code, we'll need to set up a virtual environment to handle the project dependencies separately
+from your system's Python packages. This will ensure that whatever you run on your local machine will be
+reproducible in any teammate's machine.
 
-You need `poetry` to install and manage dependencies. You should also install `pyenv` (see [here](https://github.com/pyenv/pyenv-installer)) to manage python versions.
+We'll be using `poetry` to to install and manage dependencies. You should also install `pyenv` (see [here](https://github.com/pyenv/pyenv-installer)) to manage python versions.
 
 The codebase uses `Python 3.10.4`. So after installing `pyenv` and `pyenv` run
 ```bash
@@ -21,6 +24,16 @@ to create a virtual environment, and install all dependencies to it. Then, close
 ```bash
     poetry shell
     pre-commit install
+```
+
+2. Docker & docker compose
+Going one step further from poetry lock files, we wish to have our code containerized to really ensure a deterministic
+build, no matter where we run our code. We'll use docker and docker compose to containerize our code.
+You already have a Dockerfile and a docker-compose.yaml that creates a container with your source code and notebooks
+using the same poetry lock file, so you can switch from poetry development to docker with easy.
+To initialize just run
+```bash
+    docker compose up
 ```
 
 ## Project Organization
@@ -56,7 +69,7 @@ Main folder and file structure for the project.
     ├── tox.ini            <- File to manage vscode configuration.
     │
     └── .pre-commit-config <- File to setup git pre commit hooks.
-    
+
 ```
 
 ---
