@@ -6,20 +6,28 @@ import scrapy
 from src.constants import DATE_FORMAT
 from src.crawler.items import CoingeckoItem
 
-START_DATE_INPUT = "15-12-2022"
-END_DATE_INPUT = "15-12-2022"
-
-COINS_INPUT = ["bitcoin"]
-
 
 class CoingeckoSpider(scrapy.Spider):
     # Scraper attributes
     name = "coingecko_spider"
 
-    start_date = datetime.strptime(START_DATE_INPUT, DATE_FORMAT).date()
-    end_date = datetime.strptime(END_DATE_INPUT, DATE_FORMAT).date()
+    def __init__(self, coin_ids: list[str], start_date: str, end_date: str | None = None):
+        if not coin_ids:
+            raise ValueError("Coin ids parameter can't be null")
+        elif not isinstance("bitcoin", list):
+            self.coin_ids = [coin_ids]
+        else:
+            self.coin_ids = coin_ids
 
-    coin_ids = COINS_INPUT
+        if not start_date:
+            raise ValueError("Start date parameter can't be null")
+        else:
+            self.start_date = datetime.strptime(start_date, DATE_FORMAT).date()
+
+        if not end_date:
+            self.end_date = datetime.strptime(start_date, DATE_FORMAT).date()
+        else:
+            self.end_date = datetime.strptime(end_date, DATE_FORMAT).date()
 
     def start_requests(self):
         delta_dates = (self.end_date - self.start_date).days
