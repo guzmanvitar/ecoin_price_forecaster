@@ -1,7 +1,7 @@
 FROM python:3.10.4
 
 # Export env variables
-ENV PROJECT ml_project_template
+ENV PROJECT src
 ENV HOME /home
 
 # Install poetry

@@ -6,7 +6,7 @@ services:
     platform: linux/x86_64
     build:
       context: .
-      dockerfile: ./ml_project_template/Dockerfile
+      dockerfile: ./src/Dockerfile
     command:
       [
         "jupyter",
@@ -22,4 +22,4 @@ services:
     ports:
       - "8787:8787"
     volumes:
-      - ./notebooks:/home/ml_project_template/notebooks
+      - ./notebooks:/home/src/notebooks
