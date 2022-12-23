@@ -1,3 +1,9 @@
+"""Impelements coingecko_spider soider class for coingecko crawling.
+
+For a better understanding to this code check basic scrapy logic at
+https://docs.scrapy.org/en/latest/intro/tutorial.html
+"""
+
 import json
 from datetime import datetime, timedelta
 
@@ -8,14 +14,30 @@ from src.crawler.items import CoingeckoItem
 
 
 class CoingeckoSpider(scrapy.Spider):
-    # Scraper attributes
+    """Spider class supporting main coingecko scraping logic.
+
+    Args:
+        coin_id (str): coin id to scrape, ex. bitcoin
+        start_date (str): start of date range to scrape in "dd-mm-yyyy" format
+        end_date (str): end of date range to scrape in "dd-mm-yyyy" format
+
+    Raises:
+        ValueError: coin_id parameter cant be null
+        ValueError: start_date parameter cant be null
+
+    Yields:
+        CoingeckoItem: scrapy item for further processing, in particular scrapy will use this
+            yielded item to populate the database.
+    """
+
+    # Spider attributes
     name = "coingecko_spider"
 
     def __init__(self, coin_id: str, start_date: str, end_date: str | None = None):
         if not coin_id:
             raise ValueError("Coin ids parameter can't be null")
         else:
-            self.coin_ids = [coin_id]
+            self.coin_ids = [coin_id]  # TODO: add list of strings possibility
 
         if not start_date:
             raise ValueError("Start date parameter can't be null")
@@ -30,10 +52,11 @@ class CoingeckoSpider(scrapy.Spider):
         self.logger.logger.name = f"crawler.{CoingeckoSpider.name}"
 
     def start_requests(self):
+        # Build date list to crawl
         delta_dates = (self.end_date - self.start_date).days
-
         date_range = [self.start_date + timedelta(days=i) for i in range(delta_dates + 1)]
 
+        # Build url list to crawl
         crawl_list = [
             (
                 (
@@ -43,11 +66,11 @@ class CoingeckoSpider(scrapy.Spider):
                 coin_id,
                 date,
             )
-            for coin_id in self.coin_ids
+            for coin_id in self.coin_ids  # currently len(coin_ids) is always 1
             for date in date_range
         ]
 
-        self.logger.info(f"Preparing to scrape {len(crawl_list)} registries.")
+        self.logger.info(f"Preparing to scrape {len(crawl_list)} urls.")
 
         for url, coin_id, date in crawl_list:
             yield scrapy.Request(

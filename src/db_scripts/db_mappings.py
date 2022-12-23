@@ -1,3 +1,8 @@
+"""Defines the sql alchemy tables to be created
+
+See documentation in: https://docs.sqlalchemy.org/en/20/orm/extensions/declarative/api.html
+"""
+
 from sqlalchemy import Column, Date, Float, String
 from sqlalchemy.ext.declarative import declarative_base
 
