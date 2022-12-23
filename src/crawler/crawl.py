@@ -36,7 +36,7 @@ if __name__ == "__main__":
         "--start_date",
         required=True,
         type=str,
-        help="Start of range of dates to scrape in dd-mm-yyyy format",
+        help="Start of range of dates to scrape in iso format",
     )
 
     parser.add_argument(
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         "--end_date",
         required=False,
         type=str,
-        help="End of range of dates to scrape in dd-mm-yyyy format",
+        help="End of range of dates to scrape in iso format",
     )
 
     args = parser.parse_args()

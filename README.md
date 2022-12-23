@@ -95,10 +95,10 @@ Scrapy crawler logic is in the `src.crawler` module. The root of the `scrapy` pr
 All `scrapy` commands should be run from there.
 
 The preferred way to run spiders is from `src/crawler/crawl.py`. The script supports command line arguments for
-coin identifier, start date and end date. If no end date is provided, only one date is scraped, if not, the full range
-of dates is extracted. For example, to get the data for bitcoin, between the dates "15-12-2017" and "30-12-2017", run
+coin identifier, start date and end date. If no end date is provided, only one date is scraped, in all other cases, the full range
+of dates is extracted. For example, to get the data for bitcoin, between the dates "2017-12-15" and "2017-12-30", run
 ```python
-python src/crawler/crawl.py --coin_id bitcoin --start_date "15-12-2017" --end_date "30-12-2017"
+python src/crawler/crawl.py --coin_id bitcoin --start_date "2017-12-15" --end_date "2017-12-30"
 ```
 Check the crawl script's `--help` for more information.
 
@@ -110,9 +110,8 @@ At this point we just needed to enable scrapy pipelines to populate our database
 the database is generated through docker compose, in order for this part to work, you'll need to run on docker compose (as
 oposed to your poetry environment).
 
-Run `docker compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787. Once in
-the comand line you can just run the scraping script from last section. A notebook is also provided to check conection and scraping
-results.
+Run `docker compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787 (the password
+for jupyter is eureka). Once in the comand line you can just run the scraping script from last section. A notebook is also provided to check conection and scraping results.
 
 3. **Workflow scheduling**
 

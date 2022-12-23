@@ -16,4 +16,4 @@ DATA_RAW.mkdir(exist_ok=True, parents=True)
 DATA_READY.mkdir(exist_ok=True, parents=True)
 DATA_INTERIM.mkdir(exist_ok=True, parents=True)
 
-DATE_FORMAT = "%d-%m-%Y"
+API_DATE_FORMAT = "%d-%m-%Y"
