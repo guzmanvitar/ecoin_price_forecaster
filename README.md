@@ -6,7 +6,7 @@ Guzman Vitar's exam for the Mutt Data selection process.
 
 ### Installing virtual environments and getting dependencies
 
-1. *Poetry*
+1. **Poetry**
 
 Before you start to code, we'll need to set up a virtual environment to handle the project dependencies separately
 from your system's Python packages. This will ensure that whatever you run on your local machine will be
@@ -28,7 +28,7 @@ to create a virtual environment, and install all dependencies to it. Then, close
     pre-commit install
 ```
 
-2. *Docker & docker compose*
+2. **Docker & docker compose**
 
 Going one step further from poetry lock files, we wish to have our code containerized to really ensure a deterministic
 build, no matter where we run our code. We'll use docker and docker compose to containerize our code.
@@ -79,7 +79,7 @@ Main folder and file structure for the project.
 ```
 ## The challenge
 
-1. Coingecko crawler
+1. **Coingecko crawler**
 
 For the crawler logic we're going in all guns a'blazing, using `scrapy` to get the data from the API.
 I know, it's a bit of an overkill, but it solves the storage and bulk processing of the data further down the
@@ -94,7 +94,7 @@ python src/crawler/crawl.py --coin_id bitcoin --start_date "15-12-2017" --end_da
 ```
 Check the crawl script's `--help` for more information.
 
-2. Database setup
+2. **Database setup**
 
 We are using sqlalchemy to define the postgres database, and docker/ docker compose to run the db and orquestrate the crawler with the storage.
 
@@ -103,3 +103,14 @@ the database is generated through docker compose, in order for this part to work
 oposed to your poetry environment).
 
 Run `docker compose up`, you can then run the scraping script from last section in the python container.
+
+3. **Workflow scheduling**
+
+For the next part, we'll build over our code adding the workflow scheduling logic; we'll be using airflow for this. But wait a minute,
+I hear you say: Isn´t a simple CRON entry enough for this problem? Well, while its true that CRON is the most time eficient and
+straightforward (and requested) tool for the job, it has the downside of beying terrible boring as compared to airflow.
+
+As per the current configuration, all you need to do is docker compose up, navigate to airflow-webserver in port 8080 and activate the dags.
+
+**sad note:** Had my fun, now im paying for it. My DockerOperator tasks are having trouble conecting to the scraping database within docker compose,
+I'll come back and fix this issue if I have enough time.
