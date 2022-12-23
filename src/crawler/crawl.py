@@ -50,7 +50,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     process = CrawlerProcess(
-        # TODO: debug automatic import from settings
+        # TODO: fix automatic import from settings using scrapy functions
         settings={
             "CONCURRENT_REQUESTS": CONCURRENT_REQUESTS,
             "ITEM_PIPELINES": ITEM_PIPELINES,

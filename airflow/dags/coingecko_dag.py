@@ -1,3 +1,10 @@
+"""Impelements airflow dag for scraping scheduling.
+
+Uses DockerOperator to spin up our python poetry images and execute scraping tasks.
+
+Note: Requires permission configuration to allow airflow user (501:0) to access the docker socket.
+"""
+
 from datetime import date, datetime, timedelta
 
 from airflow.operators.docker_operator import DockerOperator
@@ -9,7 +16,7 @@ default_args = {
     "email": ["guzmanvitar@muttdata.com"],
     "email_on_failure": True,
     "email_on_retry": False,
-    "retries": 0,
+    "retries": 3,
     "retry_delay": timedelta(minutes=5),
 }
 
@@ -19,7 +26,7 @@ with DAG(
     description="DAG for recurrent coingecko scraping",
     default_args=default_args,
     schedule=timedelta(days=1),
-    start_date=datetime(2022, 12, 15, 3),  # TODO:fix timezone config
+    start_date=datetime(2022, 12, 23, 3),  # TODO: fix timezone
     catchup=False,
     tags=["scrapers"],
 ) as dag:
