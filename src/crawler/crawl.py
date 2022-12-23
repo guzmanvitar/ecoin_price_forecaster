@@ -17,6 +17,8 @@ from src.crawler.settings import (
     TWISTED_REACTOR,
 )
 from src.crawler.spiders.coingecko_spider import CoingeckoSpider
+from src.db_scripts.db_connection import PostgreDb
+from src.db_scripts.db_mappings import CoingeckoProcessedData
 from src.logger_definition import get_logger
 from src.utils import str2bool
 
@@ -89,6 +91,8 @@ if __name__ == "__main__":
             "DOWNLOAD_DELAY": DOWNLOAD_DELAY,
         }
     )
+
+    # Crawl API and store the data
     process.crawl(
         CoingeckoSpider,
         coin_id=args.coin_id,
@@ -97,3 +101,12 @@ if __name__ == "__main__":
     )
     logger.info(f"Launching crawl for {CoingeckoSpider.name} spiders")
     process.start()
+
+    # After process is finished, if we're saving to the database, we update the aggregated table
+    if args.db_store:
+        logger.info("Crawling finished, updating maxmin table")
+
+        db = PostgreDb()
+        minmax_df = db.create_maxmin_table()
+        # TODO: run directly on sql, eliminate weird pandas middle step
+        db.update_table_from_pandas(minmax_df, CoingeckoProcessedData)
