@@ -90,19 +90,15 @@ class CoingeckoSpider(scrapy.Spider):
         json_response = json.loads(response.text)
 
         # Scrape relevant data
-        current_price = json_response["market_data"]["current_price"]["usd"]
-        market_cap = json_response["market_data"]["market_cap"]["usd"]
-        total_volume = json_response["market_data"]["total_volume"]["usd"]
+        usd_price = json_response["market_data"]["current_price"]["usd"]
 
         # Define and populate Item
         item = CoingeckoItem()
 
         item["coin_id"] = response.meta["coin_id"]
         item["date"] = response.meta["target_date"]
-        item["currency"] = "usd"
-        item["current_price"] = current_price
-        item["market_cap"] = market_cap
-        item["total_volume"] = total_volume
+        item["usd_price"] = usd_price
+        item["full_response"] = json_response
 
         # Yield item to be stored in database
         yield item

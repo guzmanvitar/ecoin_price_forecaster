@@ -53,7 +53,7 @@ class CoingeckoCrawlerDbPipeline:
             my_session.begin()
             # NOTE: Use of merge (instead of add) allows for update registry if crawled item is
             # repeated
-            my_session.merge(db_mappings.Coingecko(**item_dict))
+            my_session.merge(db_mappings.CoingeckoScrapedData(**item_dict))
             my_session.commit()
 
 
