@@ -18,3 +18,12 @@ class CoingeckoScrapedData(Base):
     date = Column(Date, primary_key=True)
     usd_price = Column(Float)
     full_response = Column(JSONB)
+
+
+class CoingeckoProcessedData(Base):
+    __tablename__ = "coingecko_processed_data"
+
+    coin_id = Column(String(15), primary_key=True)
+    year_month = Column(String(7), primary_key=True)
+    usd_price_max = Column(Float)
+    usd_price_min = Column(Float)

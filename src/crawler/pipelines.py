@@ -3,14 +3,14 @@ import json
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.constants import DATA_RAW
+from src.constants import DATA_RAW, POSTGRESDB_CON_STRING
 from src.db_scripts import db_mappings
 
 
 class CoingeckoCrawlerDbPipeline:
     # Define conection string to acces postre database. Note that the string follows docker
     # formating rules and uses name, user and password as defined in docker compose db service.
-    CON_STRING = "postgresql://admin:admin@database:5432/postgresdb"
+    CON_STRING = POSTGRESDB_CON_STRING
 
     def __init__(self):
         self.create_engine()
