@@ -1,30 +1,12 @@
 import json
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-from src.constants import DATA_RAW, POSTGRESDB_CON_STRING
-from src.db_scripts import db_mappings
+from src.constants import DATA_RAW
+from src.db_scripts import db_connection, db_mappings
 
 
 class CoingeckoCrawlerDbPipeline:
-    # Define conection string to acces postre database. Note that the string follows docker
-    # formating rules and uses name, user and password as defined in docker compose db service.
-    CON_STRING = POSTGRESDB_CON_STRING
-
     def __init__(self):
-        self.create_engine()
-        self.create_table()
-        self.define_session()
-
-    def create_engine(self):
-        self.engine = create_engine(self.CON_STRING)
-
-    def create_table(self):
-        db_mappings.Base.metadata.create_all(self.engine)
-
-    def define_session(self):
-        self.Session = sessionmaker(bind=self.engine)
+        self.db = db_connection.PostgreDb()
 
     def process_item(self, item, spider):
         self.storeitems(item)
@@ -48,7 +30,7 @@ class CoingeckoCrawlerDbPipeline:
             json.dump(item_dict, f)
 
         # # DB STORAGE
-        with self.Session() as my_session:
+        with self.db.Session() as my_session:
             # Db storage
             my_session.begin()
             # NOTE: Use of merge (instead of add) allows for update registry if crawled item is

@@ -12,16 +12,20 @@ from src.db_scripts import db_mappings
 
 
 class PostgreDb:
-    """Class containing database conection and querying functionality."""
+    """Class containing database conection and querying functionality.
+
+    Note that the query string imported from constantes follows docker formating rules and uses
+    name, user and password as defined in docker compose db service.
+    """
 
     def __init__(self, constring: str = POSTGRESDB_CON_STRING):
         self._constring = constring
-        self._create_engine()
+        self._create_engine(constring)
         self._create_table()
         self._define_session()
 
-    def _create_engine(self):
-        self.engine = create_engine(self._constring)
+    def _create_engine(self, constring):
+        self.engine = create_engine(constring)
 
     def _create_table(self):
         db_mappings.Base.metadata.create_all(self.engine)
