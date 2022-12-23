@@ -112,12 +112,12 @@ oposed to your poetry environment).
 
 Run `docker compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787 (the password
 for jupyter is eureka). Once in the comand line you can just run the scraping script from last section with the db_store option set to
-true:
+true. To populate your db with a fair amount of data, you can try:
 ```bash
-python src/crawler/crawl.py --coin_id bitcoin --start_date "2017-12-15" --end_date "2017-12-30" --db_store True
+python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_date "2022-12-15" --db_store True
 ```
-
-A notebook is also provided to check conection and scraping results.
+note: coingecko's API is pretty sensible to request load, scrapy has been configured to push the limits, but the previous scraping will
+still take around 15 minutes to complete.
 
 3. **Workflow scheduling**
 
