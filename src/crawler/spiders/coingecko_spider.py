@@ -5,11 +5,11 @@ https://docs.scrapy.org/en/latest/intro/tutorial.html
 """
 
 import json
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 import scrapy
 
-from src.constants import DATE_FORMAT
+from src.constants import API_DATE_FORMAT
 from src.crawler.items import CoingeckoItem
 
 
@@ -18,8 +18,8 @@ class CoingeckoSpider(scrapy.Spider):
 
     Args:
         coin_id (str): coin id to scrape, ex. bitcoin
-        start_date (str): start of date range to scrape in "dd-mm-yyyy" format
-        end_date (str): end of date range to scrape in "dd-mm-yyyy" format
+        start_date (str): start of date range to scrape in iso format
+        end_date (str): end of date range to scrape in iso format
 
     Raises:
         ValueError: coin_id parameter cant be null
@@ -42,12 +42,12 @@ class CoingeckoSpider(scrapy.Spider):
         if not start_date:
             raise ValueError("Start date parameter can't be null")
         else:
-            self.start_date = datetime.strptime(start_date, DATE_FORMAT).date()
+            self.start_date = date.fromisoformat(start_date)
 
         if not end_date:
-            self.end_date = datetime.strptime(start_date, DATE_FORMAT).date()
+            self.end_date = date.fromisoformat(start_date)
         else:
-            self.end_date = datetime.strptime(end_date, DATE_FORMAT).date()
+            self.end_date = date.fromisoformat(end_date)
 
         self.logger.logger.name = f"crawler.{CoingeckoSpider.name}"
 
@@ -61,18 +61,18 @@ class CoingeckoSpider(scrapy.Spider):
             (
                 (
                     f"https://api.coingecko.com/api/v3/coins/{coin_id}/"
-                    f"history?date={date.strftime(DATE_FORMAT) }"
+                    f"history?date={target_date.strftime(API_DATE_FORMAT) }"
                 ),
                 coin_id,
-                date,
+                target_date,
             )
             for coin_id in self.coin_ids  # currently len(coin_ids) is always 1
-            for date in date_range
+            for target_date in date_range
         ]
 
         self.logger.info(f"Preparing to scrape {len(crawl_list)} urls.")
 
-        for url, coin_id, date in crawl_list:
+        for url, coin_id, target_date in crawl_list:
             yield scrapy.Request(
                 url=url,
                 callback=self.parse,
@@ -82,7 +82,7 @@ class CoingeckoSpider(scrapy.Spider):
                         "Mozilla/5.0 (X11; Linux x86_64; rv:48.0) Gecko/20100101 Firefox/48.0"
                     ),
                 },
-                meta={"coin_id": coin_id, "date": date},
+                meta={"coin_id": coin_id, "target_date": target_date},
             )
 
     def parse(self, response):
@@ -90,19 +90,15 @@ class CoingeckoSpider(scrapy.Spider):
         json_response = json.loads(response.text)
 
         # Scrape relevant data
-        current_price = json_response["market_data"]["current_price"]["usd"]
-        market_cap = json_response["market_data"]["market_cap"]["usd"]
-        total_volume = json_response["market_data"]["total_volume"]["usd"]
+        usd_price = json_response["market_data"]["current_price"]["usd"]
 
         # Define and populate Item
         item = CoingeckoItem()
 
         item["coin_id"] = response.meta["coin_id"]
-        item["date"] = response.meta["date"]
-        item["currency"] = "usd"
-        item["current_price"] = current_price
-        item["market_cap"] = market_cap
-        item["total_volume"] = total_volume
+        item["date"] = response.meta["target_date"]
+        item["usd_price"] = usd_price
+        item["full_response"] = json_response
 
         # Yield item to be stored in database
         yield item

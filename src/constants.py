@@ -16,4 +16,6 @@ DATA_RAW.mkdir(exist_ok=True, parents=True)
 DATA_READY.mkdir(exist_ok=True, parents=True)
 DATA_INTERIM.mkdir(exist_ok=True, parents=True)
 
-DATE_FORMAT = "%d-%m-%Y"
+POSTGRESDB_CON_STRING = "postgresql://admin:admin@database:5432/postgresdb"
+
+API_DATE_FORMAT = "%d-%m-%Y"

@@ -4,18 +4,26 @@ See documentation in: https://docs.sqlalchemy.org/en/20/orm/extensions/declarati
 """
 
 from sqlalchemy import Column, Date, Float, String
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
 # Define table class
-class Coingecko(Base):
-    __tablename__ = "coingecko"
+class CoingeckoScrapedData(Base):
+    __tablename__ = "coingecko_scraped_data"
 
     coin_id = Column(String(15), primary_key=True)
     date = Column(Date, primary_key=True)
-    currency = Column(String(3))
-    current_price = Column(Float)
-    market_cap = Column(Float)
-    total_volume = Column(Float)
+    usd_price = Column(Float)
+    full_response = Column(JSONB)
+
+
+class CoingeckoProcessedData(Base):
+    __tablename__ = "coingecko_processed_data"
+
+    coin_id = Column(String(15), primary_key=True)
+    year_month = Column(String(7), primary_key=True)
+    usd_price_max = Column(Float)
+    usd_price_min = Column(Float)

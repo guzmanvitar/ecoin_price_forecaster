@@ -32,7 +32,7 @@ with DAG(
 ) as dag:
     start = DummyOperator(task_id="start_dag")
 
-    current_date = date.today().strftime("%d-%m-%Y")
+    current_date = str(date.today())
 
     bitcoin_scraping = DockerOperator(
         task_id="bitcoin_scraping",
