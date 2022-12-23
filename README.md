@@ -123,8 +123,8 @@ still take around 15 minutes to complete.
 
 For the next part, we kept building over our code, adding the workflow scheduling logic; we used airflow for this.
 
-But wait a minute, I hear you say: Isn´t a simple CRON entry enough for this problem? Well, my shrewd friend. while its true that
-CRON is the most codingtime eficient and straightforward (and requested) tool for the job, it has the fatal flaw of being terrible boring as compared to airflow.
+But wait a minute, I hear you say: Isn't a simple CRON entry enough for this problem? Well, my shrewd friend, while its true that
+CRON is the most codingtime eficient and straightforward (and requested) tool for the job, it has the fatal flaw of being terrible boring compared to airflow.
 
 In any case, as per the current configuration, all you need to do is docker compose up, navigate to airflow-webserver in port 8080 and activate the dags.
 
