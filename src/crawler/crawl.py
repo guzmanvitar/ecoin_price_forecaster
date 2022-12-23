@@ -11,6 +11,7 @@ from scrapy.crawler import CrawlerProcess
 
 from src.crawler.settings import (
     CONCURRENT_REQUESTS,
+    DOWNLOAD_DELAY,
     REQUEST_FINGERPRINTER_IMPLEMENTATION,
     ROBOTSTXT_OBEY,
     TWISTED_REACTOR,
@@ -85,6 +86,7 @@ if __name__ == "__main__":
             "ROBOTSTXT_OBEY": ROBOTSTXT_OBEY,
             "REQUEST_FINGERPRINTER_IMPLEMENTATION": REQUEST_FINGERPRINTER_IMPLEMENTATION,
             "TWISTED_REACTOR": TWISTED_REACTOR,
+            "DOWNLOAD_DELAY": DOWNLOAD_DELAY,
         }
     )
     process.crawl(
