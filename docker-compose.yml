@@ -277,6 +277,7 @@ services:
       - "5432:5432"
     volumes:
       - db_volume:/var/lib/postgresql/data
+      - ./src/db_scripts/queries:/home
     depends_on:
       <<: *airflow-common-depends-on
       airflow-init:
