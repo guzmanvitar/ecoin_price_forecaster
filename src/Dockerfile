@@ -14,13 +14,13 @@ RUN mkdir $PROJECT_DIR
 WORKDIR $PROJECT_DIR
 
 # Copy poetry installation files
-COPY --chown=$UID:$GID poetry.lock $PROJECT_DIR/
-COPY --chown=$UID:$GID pyproject.toml $PROJECT_DIR/
+COPY poetry.lock $PROJECT_DIR/
+COPY pyproject.toml $PROJECT_DIR/
 
 # Copy project and notebook files
-COPY --chown=$UID:$GID  scrapy.cfg $PROJECT_DIR
-COPY --chown=$UID:$GID ./src/ $PROJECT_DIR/src
-COPY --chown=$UID:$GID ./notebooks/ $PROJECT_DIR/notebooks
+COPY scrapy.cfg $PROJECT_DIR
+COPY ./src/ $PROJECT_DIR/src
+COPY ./notebooks/ $PROJECT_DIR/notebooks
 RUN mkdir $PROJECT_DIR/logs
 
 # Install poetry dependencies
