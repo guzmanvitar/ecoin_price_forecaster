@@ -139,3 +139,11 @@ docker exec -it scraping_database bash
 psql postgresdb admin -f home/query1.sql
 psql postgresdb admin -f home/query2.sql
 ```
+
+5. **Twitter streaming**
+
+A twitter streaming script that checks for twits based on a list of filters is implemented using tweepy. The script runs automatically with the
+filter "christmas" when initializing docker compose. It can also be run on any list of filters locally through:
+```bash
+python src/twitter_streaming/twitter_tracker.py -t filter1 filter2 ... filtern
+```

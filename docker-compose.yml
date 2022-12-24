@@ -306,10 +306,25 @@ services:
     ports:
       - "8787:8787"
     volumes:
-      - ./notebooks:/home/src/notebooks
+      - ./notebooks:/home/mutt_exam/src/notebooks
+      - ./data/raw:/home/mutt_exam/data/raw
     depends_on:
       - database
+
+  #########################
+  ### TWITTER STREAMING ###
+  #########################
+  twitter_streaming:
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: ./src/Dockerfile
+    command: [ "python", "src/twitter_streaming/twitter_tracker.py" ]
+    restart: on-failure
+    volumes:
+      - ./data/raw:/home/mutt_exam/data/raw
 
 volumes:
   db_volume:
   airflow-db-volume:
+  data_raw_volume:

@@ -23,6 +23,9 @@ COPY ./src/ $PROJECT_DIR/src
 COPY ./notebooks/ $PROJECT_DIR/notebooks
 RUN mkdir $PROJECT_DIR/logs
 
+# Copy secrets
+COPY .secrets $PROJECT_DIR/.secrets
+
 # Install poetry dependencies
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
