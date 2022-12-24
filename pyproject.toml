@@ -16,6 +16,7 @@ psycopg2 = "^2.9.5"
 sqlalchemy = "^1.4.45"
 scrapy = "^2.7.1"
 pandas = "^1.5.2"
+tweepy = "3.9.0"
 
 
 [tool.poetry.group.dev.dependencies]
