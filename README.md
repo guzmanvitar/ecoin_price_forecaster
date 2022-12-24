@@ -147,3 +147,14 @@ filter "christmas" when initializing docker compose. It can also be run on any l
 ```bash
 python src/twitter_streaming/twitter_tracker.py -t filter1 filter2 ... filtern
 ```
+
+TODO: Part 2 of excercise 4 involving spark processing is not implemented.
+
+## Thanks!
+
+Had a blast solving the exam. Got a chance to apply some of my knowledge, dust off some tools that I hadn't used in a while and learn a few new tricks.
+
+Ended up putting in **way** more time than was supposed to (shame on me), but what can I say, if becoming obsessed with solving a challenge is a crime, your honor, I'm guilty as charged.
+
+Happy Hollidays!
+
