@@ -42,7 +42,7 @@ using the same poetry lock file, so you can switch from poetry development to do
 
 To initialize just run
 ```bash
-    docker compose up
+    docker compose-up
 ```
 
 ## Project Organization
@@ -110,7 +110,7 @@ At this point we just needed to enable scrapy pipelines to populate our database
 the database is generated through docker compose, in order for this part to work, you'll need to run on docker compose (as
 oposed to your poetry environment).
 
-Run `docker compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787 (the password
+Run `docker-compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787 (the password
 for jupyter is eureka). Once in the comand line you can just run the scraping script from last section with the db_store option set to
 true. To populate your db with a fair amount of data, you can try:
 ```bash
