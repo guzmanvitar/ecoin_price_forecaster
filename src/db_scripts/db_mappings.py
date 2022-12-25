@@ -12,6 +12,8 @@ Base = declarative_base()
 
 # Define table class
 class CoingeckoScrapedData(Base):
+    """Sqlalchemy table definition for the storage of scraped data."""
+
     __tablename__ = "coingecko_scraped_data"
 
     coin_id = Column(String(15), primary_key=True)
@@ -21,6 +23,8 @@ class CoingeckoScrapedData(Base):
 
 
 class CoingeckoProcessedData(Base):
+    """Sqlalchemy table definition for the storage of aggregations of scraped data."""
+
     __tablename__ = "coingecko_processed_data"
 
     coin_id = Column(String(15), primary_key=True)

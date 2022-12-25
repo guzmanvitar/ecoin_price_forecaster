@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # Select json pipeline or db and json pipeline based on comand line input
+    # Select only json pipeline or db and json pipeline based on comand line input
     if args.db_store:
         ITEM_PIPELINES = {
             "src.crawler.pipelines.CoingeckoCrawlerDbPipeline": 300,

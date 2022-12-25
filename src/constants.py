@@ -1,6 +1,11 @@
+"""Defines project wide constants
+
+"""
+
 import json
 from pathlib import Path
 
+# Path constants
 this = Path(__file__)
 
 ROOT = this.parents[1]
@@ -20,10 +25,14 @@ DATA_READY.mkdir(exist_ok=True, parents=True)
 DATA_INTERIM.mkdir(exist_ok=True, parents=True)
 DATA_TWITTER.mkdir(exist_ok=True, parents=True)
 
+# Postgres connection, as defined by sqlalchemy formating, and by user, password and name defined in
+# docker compose service.
 POSTGRESDB_CON_STRING = "postgresql://admin:admin@database:5432/postgresdb"
 
+# Coingecko API date format
 API_DATE_FORMAT = "%d-%m-%Y"
 
-# TODO: Improve this
+# Secrets for twitter API
+# TODO: Improve this, with dotenv maybe
 with open(SECRETS / "twitter_credentials.json") as f:
     TWITTER_CREDENTIALS = json.load(f)

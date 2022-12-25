@@ -1,7 +1,12 @@
-# Define here the models for your spider middleware
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+"""Defines the models for spider middleware
+
+See documentation in:
+https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+
+NOTE: No middlewares implemented for this project, we still need to keep this file for scrapy to
+work properly though.
+"""
+
 
 # useful for handling different item types with a single interface
 # from itemadapter import ItemAdapter, is_item
