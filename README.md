@@ -55,26 +55,22 @@ Main folder and file structure for the project (the tree is non comprehensive)
     │   ├── ready          <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries.
-    │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `001-sc-initial-data-exploration`.
     │
     ├── references         <- Data dictionaries, links to Notion or other explanatory materials.
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting.
     │
     ├── src
     │   │
-    │   ├── data           <- Scripts to download or generate data.
+    │   ├── db_scripts     <- Database related scripts
     │   │
     │   ├── crawler        <- Scripts to scrape data.
     │   │
-    │   ├── models         <- Scripts to train models and make predictions.
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations.
+    │   └── twitter_
+    │          streaming.  <- Scripts related to twitter stream functionality
+    │    
     │
     ├── pyproject.toml     <- File to manage dependencies and some tool's configurations.
     │
