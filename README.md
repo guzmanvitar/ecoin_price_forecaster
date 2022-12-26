@@ -128,8 +128,6 @@ CRON is the most codingtime eficient and straightforward (and requested) tool fo
 
 In any case, as per the current configuration, all you need to do is docker compose up, navigate to airflow-webserver in port 8080 and activate the dags.
 
-**sad note:** Had my fun, now im paying for it. My DockerOperator tasks are having trouble conecting to the scraping database within docker compose, I'll come back and fix this issue if I have enough time.
-
 4. **Data Analysis**
 
 Data analysis is provided in the form of .sql files. The files are shared through compose with the scraping_database service. To test the queries you can access
