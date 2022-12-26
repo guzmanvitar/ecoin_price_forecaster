@@ -39,8 +39,8 @@ with DAG(
         image="exam-guzman-vitar_python_poetry",
         auto_remove=True,
         command=f"python src/crawler/crawl.py --coin_id bitcoin --start_date '{current_date}'",
-        docker_url="unix://var/run/docker.sock",
-        network_mode="bridge",
+        docker_url="tcp://docker-proxy:2375",
+        network_mode="exam-guzman-vitar_default",
     )
 
     ethereum_scraping = DockerOperator(
@@ -48,8 +48,8 @@ with DAG(
         image="exam-guzman-vitar_python_poetry",
         auto_remove=True,
         command=f"python src/crawler/crawl.py --coin_id ethereum --start_date '{current_date}'",
-        docker_url="unix://var/run/docker.sock",
-        network_mode="bridge",
+        docker_url="tcp://docker-proxy:2375",
+        network_mode="exam-guzman-vitar_default",
     )
 
     cardano_scraping = DockerOperator(
@@ -57,8 +57,8 @@ with DAG(
         image="exam-guzman-vitar_python_poetry",
         auto_remove=True,
         command=f"python src/crawler/crawl.py --coin_id cardano --start_date '{current_date}'",
-        docker_url="unix://var/run/docker.sock",
-        network_mode="bridge",
+        docker_url="tcp://docker-proxy:2375",
+        network_mode="exam-guzman-vitar_default",
     )
 
     close = DummyOperator(task_id="close_dag")
