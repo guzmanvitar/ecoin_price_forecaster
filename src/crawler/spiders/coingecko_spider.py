@@ -5,6 +5,7 @@ https://docs.scrapy.org/en/latest/intro/tutorial.html
 """
 
 import json
+from collections.abc import Iterator
 from datetime import date, timedelta
 
 import scrapy
@@ -51,7 +52,16 @@ class CoingeckoSpider(scrapy.Spider):
 
         self.logger.logger.name = f"crawler.{CoingeckoSpider.name}"
 
-    def start_requests(self):
+    def start_requests(self) -> Iterator[scrapy.Request]:
+        """Makes initial scrapy requests to coingecko API.
+
+        This method is usually combined in scrapy with further requests for pagination or for
+        further exploration of new urls found in initial scraping. In this case though, the initial
+        request are all the requests we'll do.
+
+        Yields:
+            Iterator[scrapy.Request]: The initial request.
+        """
         # Build date list to crawl
         delta_dates = (self.end_date - self.start_date).days
         date_range = [self.start_date + timedelta(days=i) for i in range(delta_dates + 1)]
@@ -75,7 +85,7 @@ class CoingeckoSpider(scrapy.Spider):
         for url, coin_id, target_date in crawl_list:
             yield scrapy.Request(
                 url=url,
-                callback=self.parse,
+                callback=self.parse,  # yielded requests are processed through the parse callback
                 headers={
                     "Accept": "application/json",
                     "User-Agent": (
@@ -85,7 +95,19 @@ class CoingeckoSpider(scrapy.Spider):
                 meta={"coin_id": coin_id, "target_date": target_date},
             )
 
-    def parse(self, response):
+    def parse(self, response) -> Iterator[CoingeckoItem]:
+        """Processor for API request response.
+
+        Recieves text response from API, extracts relevant information, loads said information to a
+        scrapy item and yields said item for further processing in the pipelines.py script.
+
+        Args:
+            response (http.TextResponse): The responses for the crawl list defined in the
+                start_requests method.
+
+        Yields:
+            Iterator[CoingeckoItem]: A scrapy item, defined for this particular scraper.
+        """
         # Load API response
         json_response = json.loads(response.text)
 

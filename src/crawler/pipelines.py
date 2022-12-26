@@ -1,3 +1,12 @@
+"""Implements logic for processing scrapped items.
+
+Every item that we yield in our spiders will be processed through this script. We define to post
+processing pipelines here, one dumps the scraped item to local folder, the other dumps the json
+and also stores the item in a database.
+
+More info: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+"""
+
 import json
 
 from src.constants import DATA_RAW

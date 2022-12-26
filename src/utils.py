@@ -5,14 +5,14 @@
 import argparse
 
 
-def str2bool(input):
+def str2bool(input) -> bool:
     """Helper function for argparse boolean parameters
 
     As suggested in
     https://stackoverflow.com/questions/15008758/parsing-boolean-values-with-argparse
 
     Args:
-        input: user input
+        input: user command line input
 
     Returns:
         bool: input converted to True or False
