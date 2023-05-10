@@ -13,7 +13,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow import DAG
 
 default_args = {
-    "email": ["guzmanvitar@muttdata.com"],
+    "email": ["guzmanvitar@gmail.com"],
     "email_on_failure": True,
     "email_on_retry": False,
     "retries": 3,
