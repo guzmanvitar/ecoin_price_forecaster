@@ -315,8 +315,8 @@ services:
     ports:
       - "8787:8787"
     volumes:
-      - ./notebooks:/home/mutt_exam/src/notebooks
-      - ./data/raw:/home/mutt_exam/data/raw
+      - ./notebooks:/home/fullstack_ml/src/notebooks
+      - ./data/raw:/home/fullstack_ml/data/raw
     depends_on:
       - database
 
@@ -331,7 +331,7 @@ services:
     command: [ "python", "src/twitter_streaming/twitter_tracker.py" ]
     restart: on-failure
     volumes:
-      - ./data/raw:/home/mutt_exam/data/raw
+      - ./data/raw:/home/fullstack_ml/data/raw
 
 volumes:
   db_volume:

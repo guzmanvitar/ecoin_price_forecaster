@@ -1,7 +1,7 @@
-FROM python:3.10.4
+FROM python:3.10.9
 
 # Export env variables
-ENV PROJECT mutt_exam
+ENV PROJECT fullstack_ml
 ENV HOME /home
 
 # Install poetry

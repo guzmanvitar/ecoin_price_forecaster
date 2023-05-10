@@ -39,10 +39,10 @@
     // Jupyter
     //
     "jupyter.notebookFileRoot": "${workspaceFolder}",
-    "jupyter.sendSelectionToInteractiveWindow": true,
     "jupyter.generateSVGPlots": true,
     //
     // OTHER
     //
     "autoDocstring.docstringFormat": "google",
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
 }
