@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "mutt-data-exam"
+name = "full-stack-ml-challenge"
 version = "0.1.0"
-description = "Guzman Vitar's Mutt Data exam"
+description = "Full stack ML challenge"
 authors = ["guzmanvitar <guzmanvitar@gmail.com>"]
 packages = [
     { include = "src" }
