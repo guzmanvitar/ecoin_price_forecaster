@@ -23,7 +23,7 @@ repos:
         types_or: [cython, pyi, python]
         args: [--settings-path=pyproject.toml]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: check-case-conflict
       - id: check-docstring-first
@@ -36,13 +36,14 @@ repos:
       - id: check-toml
         types: [toml]
       - id: check-yaml
+        args: [--allow-multiple-documents]
         types: [yaml]
       - id: no-commit-to-branch
       - id: trailing-whitespace
         types: [text]
         stages: [commit, push, manual]
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.2.0
+    rev: v3.4.0
     hooks:
       - id: pyupgrade
         types: [python]
