@@ -25,7 +25,7 @@ DATA_TWITTER.mkdir(exist_ok=True, parents=True)
 
 # Postgres connection, as defined by sqlalchemy formating, and by user, password and name defined in
 # docker compose service.
-POSTGRESDB_CON_STRING = "postgresql://admin:admin@database:5432/postgresdb"
+POSTGRESDB_CON_STRING = "postgresql://admin:admin@scraping-database:5432/postgresdb"
 
 # Coingecko API date format
 API_DATE_FORMAT = "%d-%m-%Y"
