@@ -1,8 +1,6 @@
 """Defines project wide constants
 
 """
-
-import json
 from pathlib import Path
 
 # Path constants
@@ -31,8 +29,3 @@ POSTGRESDB_CON_STRING = "postgresql://admin:admin@database:5432/postgresdb"
 
 # Coingecko API date format
 API_DATE_FORMAT = "%d-%m-%Y"
-
-# Secrets for twitter API
-# TODO: Improve this, with dotenv maybe
-with open(SECRETS / "twitter_credentials.json") as f:
-    TWITTER_CREDENTIALS = json.load(f)
