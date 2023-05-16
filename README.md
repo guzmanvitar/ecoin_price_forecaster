@@ -1,5 +1,6 @@
 # Full stack ML challenge
 
+# Challenge description
 A two-project machine learning challenge that aims to test skills involved in the development of end-to-end ML projects, from data extraction and model development to serving and deploying the solution in the cloud. The challenge consists of two projects:
 
 1. The first project of the machine learning challenge involves ecoin price forecasting. Participants will need to develop a machine learning model capable of predicting the price of a specific ecoin based on its historical price data. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future. Participants are also required to develop a system for data collection and preprocessing, model training, and deployment to a cloud environment.
@@ -8,7 +9,8 @@ A two-project machine learning challenge that aims to test skills involved in th
 
 The challenge is partially based on a [Mutt Data](https://muttdata.ai/) challenge. The base structure of the repo is adapted from Cookie Cutter Data Science and from [Tryolab's](https://tryolabs.com/) `project-base` template.
 
-## Getting started
+# My solution
+## Getting started with the repo
 
 ### Installing virtual environments and getting dependencies
 
@@ -38,20 +40,45 @@ Once inside the shell we'll also run
 ```
 to setup git hooks.
 
-2. **Docker & docker compose**
+2. **Docker & kubernetes**
 
 Going one step further from poetry lock files, we want to have our code containerized to really ensure a deterministic
-build, no matter where we execute. I use docker to containerize the code and kubernetes to orechestrate containers.
+build, no matter where we execute. This repo uses docker to containerize the code and kubernetes to orechestrate containers.
 
-For develop purposes though I also left a docker-compose.yaml that creates defines a postgres database, an airflow scheduler
-and a container with a python environment instaled using the same poetry lock in the project root. This allows for easy
-switch between local testing and container environment.
+To locally test the kubernetes cluster you can install `minikube` (see [here](https://minikube.sigs.k8s.io/docs/start/)).
 
-To initialize just run
+Custom images used in yamls in kubernetes are stored in my personal GCP Container Registry. You can either ping me for
+credentials or build the images from the Dockerfiles, push to your own CR and modify the kubernetes yamls accordingly.
+
+To login to docker using gcp credentials run:
 ```bash
-    docker compose-up
+    cat .secrets/gcp_service_account_creds.json | docker login -u _json_key --password-stdin https://gcr.io
 ```
-## Ecoin price forecaster
+
+To use the credentials in kubernetes run:
+```bash
+    kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat .secrets/gcp_service_account_creds.json)" --docker-email=any@valid.email
+```
+
+You can check everything is working as its supposed to by running the postgres db and local python env deployments:
+```bash
+    kubectl apply -f postgres-db.yaml
+    kubectl apply -f kubernetes/python-env.yaml
+```
+
+The python-env containers are installed wth the latest poetry lock available in this repo. Anything you can run locally you should
+be able to run inside these containers. To access the containers you can kubectl exec into the corresponding pod and container, or
+you can access the jupyter lab at:
+```bash
+minikube service python-env --url
+```
+
+Whatever the method, once inside the container try for one simple test:
+```bash
+python src/db_scripts/test_database_connection.py
+```
+
+## Project 1: Ecoin price forecaster
 
 1. **Coingecko crawler**
 The first part of the challenge consists on extracting a toy training dataset of historic coin prices from coingecko.
@@ -89,7 +116,7 @@ python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_da
 note: coingecko's API is pretty sensible to request load, scrapy has been configured to push the limits, but the previous scraping will
 still take around 15 minutes to complete.
 
-3. **Scheduling**
+3. **Scheduling and orchestration**
 For the next part, we are asked to add scheduling to run the scraper daily.
 
 For the scheduling logic we're going to use airflow. But wait a minute, I hear you say: Isn't a simple CRON entry enough for this problem? Well, my shrewd friend, while its true that CRON is the most codingtime eficient and straightforward (and requested) tool for the job, it has the fatal flaw of being terrible boring compared to airflow.
@@ -106,7 +133,7 @@ psql postgresdb admin -f home/query1.sql
 psql postgresdb admin -f home/query2.sql
 ```
 
-## Real time twitter sentiment analysis
+## Project 2: Real time twitter sentiment analysis
 1. **Twitter streaming**
 
 A twitter streaming script that checks for twits based on a list of filters is implemented using tweepy. The script runs automatically with the
