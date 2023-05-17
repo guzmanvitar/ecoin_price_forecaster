@@ -57,7 +57,7 @@ class CoingeckoSpider(scrapy.Spider):
 
         This method is usually combined in scrapy with further requests for pagination or for
         further exploration of new urls found in initial scraping. In this case though, the initial
-        request are all the requests we'll do.
+        requests are all the requests we'll do.
 
         Yields:
             Iterator[scrapy.Request]: The initial request.
