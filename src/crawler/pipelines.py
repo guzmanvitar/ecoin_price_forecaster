@@ -9,7 +9,7 @@ More info: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import json
 
-from src.constants import DATA_RAW
+from src.constants import DATA_COINGECKO
 from src.db_scripts import db_connection, db_mappings
 
 
@@ -33,7 +33,7 @@ class CoingeckoCrawlerDbPipeline:
         date = item_dict["date"]
         coin = item_dict["coin_id"]
 
-        write_path = DATA_RAW / f"{coin}_{date}.json"
+        write_path = DATA_COINGECKO / f"{coin}_{date}.json"
 
         with open(str(write_path), "w") as f:
             json.dump(item_dict, f)
@@ -54,6 +54,7 @@ class CoingeckoCrawlerJsonPipeline:
         return item
 
     def storeitems(self, item):
+        # TODO: Create parent class to avoid repeated code below
         # convert scrapy item to json
         item_dict = dict(item)
 
@@ -64,7 +65,7 @@ class CoingeckoCrawlerJsonPipeline:
         date = item_dict["date"]
         coin = item_dict["coin_id"]
 
-        write_path = DATA_RAW / f"{coin}_{date}.json"
+        write_path = DATA_COINGECKO / f"{coin}_{date}.json"
 
         with open(str(write_path), "w") as f:
             json.dump(item_dict, f)
