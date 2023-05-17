@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-cronjob
+spec:
+  schedule: "0 6 * * *" # Run at 6 AM UTC every day
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: my-container
+              image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+              command:
+                - python
+                - src/crawler/crawl.py
+                - --coin_id
+                - bitcoin
+                - --start_date
+                - $(date -d "yesterday" +%F) # Scrape yesterday's data
+                - --db_store
+                - "True"
+          restartPolicy: OnFailure
