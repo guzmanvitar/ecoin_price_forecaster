@@ -40,10 +40,9 @@ ITEM_PIPELINES = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#     "rotating_proxies.middlewares.RotatingProxyMiddleware": 610,
-#     "rotating_proxies.middlewares.BanDetectionMiddleware": 620,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    "src.crawler.middlewares.CustomRetryMiddleware": 550,
+}
 
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16

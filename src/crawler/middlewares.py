@@ -2,17 +2,27 @@
 
 See documentation in:
 https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
-NOTE: No middlewares implemented for this project, we still need to keep this file for scrapy to
-work properly though.
 """
 
 
-# useful for handling different item types with a single interface
-# from itemadapter import ItemAdapter, is_item
+from time import sleep
+
 from scrapy import signals
+from scrapy.downloadermiddlewares.retry import RetryMiddleware
+from scrapy.utils.response import response_status_message
 
 
+# Custom middleware to handle 429 errors from coingecko.
+class CustomRetryMiddleware(RetryMiddleware):
+    def process_response(self, request, response, spider):
+        if response.status == 429:  # HTTP 429 Too Many Requests
+            sleep(60)  # Wait for a minute
+            reason = response_status_message(response.status)
+            return self._retry(request, reason, spider) or response
+        return response
+
+
+# Non used predefined scrapy middlewares
 class CrawlerSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
