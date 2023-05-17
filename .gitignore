@@ -132,10 +132,5 @@ cython_debug/
 /logs/*.log
 /reports/
 
-# airflow
-dag_processor_manager
-airflow/logs
-plugins
-
 # secrets
 .secrets
