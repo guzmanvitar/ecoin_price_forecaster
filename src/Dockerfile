@@ -20,11 +20,7 @@ COPY pyproject.toml $PROJECT_DIR/
 # Copy project and notebook files
 COPY scrapy.cfg $PROJECT_DIR
 COPY ./src/ $PROJECT_DIR/src
-COPY ./notebooks/ $PROJECT_DIR/notebooks
 RUN mkdir $PROJECT_DIR/logs
-
-# Copy secrets
-COPY .secrets $PROJECT_DIR/.secrets
 
 # Install poetry dependencies
 RUN poetry config virtualenvs.create false \
