@@ -129,13 +129,8 @@ cython_debug/
 
 # exclude data from source control by default
 /data/
-/logs/
+/logs/*.log
 /reports/
-
-# airflow
-dag_processor_manager
-logs
-plugins
 
 # secrets
 .secrets

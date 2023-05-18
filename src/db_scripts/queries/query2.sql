@@ -1,3 +1,7 @@
+/*
+Get the current market cap and the average uptake after three consecutive periods of price drop
+for every coin in the scraping database
+*/
 WITH price_lags AS (
     SELECT
         coin_id,

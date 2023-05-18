@@ -3,9 +3,23 @@
 # Challenge description
 A two-project machine learning challenge that aims to test skills involved in the development of end-to-end ML projects, from data extraction and model development to serving and deploying the solution in the cloud. The challenge consists of two projects:
 
-1. The first project of the machine learning challenge involves ecoin price forecasting. Participants will need to develop a machine learning model capable of predicting the price of a specific ecoin based on its historical price data. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future. Participants are also required to develop a system for data collection and preprocessing, model training, and deployment to a cloud environment.
+1. The first project of the machine learning challenge involves ecoin price forecasting. Participants will need to develop a machine learning model capable of predicting the price of a specific ecoin based on its historical price data and any other feature they deem useful. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future.
 
-2. An NLP project consisting of building a sentiment analysis system to track sentiment in real-time from a set of Twitter topics. Participants will need to develop a machine learning model that can classify tweets based on their sentiment (positive, negative, or neutral). The project also requires participants to develop a system for data collection and preprocessing, model training, and deployment to a cloud environment. Additionally, participants are expected to create a dashboard that visualizes the results of the sentiment analysis model in real-time.
+Participants are required to develop a system for data collection and preprocessing, which includes scraping historic ecoin price data from coingecko and performing some data analysis using SQL. A toy sample of data is sufficient for the purposes of the challenge.
+
+The machine learning model should be designed to handle multiple ecoins and forecast their prices for a specified time period in the future. High performance in terms of accuracy is not expected for this challenge, participants should focus on building a complete end-to-end solution rather than optimizing the model's performance.
+
+Finally, the solution should be deployed to a cloud environment, allowing for easy access and interaction with the trained model. Participants should consider the necessary infrastructure, deployment processes, and any additional components required for seamless integration and scalability.
+
+2. The NLP project involves building a sentiment analysis system to track sentiment in real-time from a set of Twitter topics. Participants will need to develop a machine learning model capable of classifying tweets based on their sentiment, categorizing them as positive, negative, or neutral.
+
+Participants are required to develop a system for data collection and preprocessing. This includes designing a mechanism to collect and process tweets in real time related to the specified topics from the Twitter API. The collected data should undergo preprocessing steps, such as text cleaning, tokenization, and removing noise, to ensure high-quality input for training the sentiment analysis model.
+
+Furthermore, the solution should be deployed to a cloud environment, enabling real-time sentiment analysis of incoming tweets. Participants should consider the necessary infrastructure, deployment processes, and any additional components required for seamless integration and scalability.
+
+To provide a comprehensive view of the sentiment analysis results, participants are also required to create a dashboard that visualizes the sentiment analysis outputs in real-time. The dashboard should provide an intuitive and user-friendly interface to monitor and analyze the sentiment trends related to the specified topics on Twitter.
+
+Throughout the project, participants will be evaluated based on their ability to build a complete end-to-end solution, including data collection, preprocessing, model development and training, cloud deployment, and real-time visualization. Emphasis will be placed on the overall system architecture, data quality, and the effectiveness of the sentiment analysis model.
 
 The challenge is partially based on a [Mutt Data](https://muttdata.ai/) challenge. The base structure of the repo is adapted from Cookie Cutter Data Science and from [Tryolab's](https://tryolabs.com/) `project-base` template.
 
@@ -91,7 +105,7 @@ Scrapy crawler logic is in the `src.crawler` module. The root of the `scrapy` pr
 All `scrapy` commands should be run from there.
 
 The preferred way to run spiders is from `src/crawler/crawl.py`. The script supports command line arguments for
-coin identifier, start date and end date. If no end date is provided, only one date is scraped, in all other cases, the full range
+coin identifier, start date and end date. If no end date is provided, only start date is scraped, in all other cases, the full range
 of dates is extracted. For example, to get the data for bitcoin, between the dates "2017-12-15" and "2017-12-30", run
 ```bash
 python src/crawler/crawl.py --coin_id bitcoin --start_date "2017-12-15" --end_date "2017-12-30"
@@ -99,36 +113,31 @@ python src/crawler/crawl.py --coin_id bitcoin --start_date "2017-12-15" --end_da
 Check the crawl script's `--help` for more information.
 
 2. **Database setup**
-In the second part we are asked to keep building on the solution by adding a postgres database that stores the scraped prices.
+In the second part we keep building on the solution by adding a postgres database that stores the scraped prices.
 
-We are using sqlalchemy to define the postgres database, and docker/ docker compose to run the db and orquestrate the crawler with the storage.
+We are using sqlalchemy to define the postgres database, and docker/ kubernetes to run the db and connect the crawler with the storage.
 
 At this point we just needed to enable scrapy pipelines to populate our database directly with the items we scrape. Mind you, as
-the database is generated through docker compose, in order for this part to work, you'll need to run on docker compose (as
-oposed to your poetry environment).
+the database is defined in kubernetes, to test this part, you'll need to create the postgress and python-env pods and run the crawler script inside the python-env pod as described in the getting started section.
 
-Run `docker-compose up`, then run docker exec to the python_poetry service, or just navigate to jupyter lab in port 8787 (the password
-for jupyter is eureka). Once in the comand line you can just run the scraping script from last section with the db_store option set to
-true. To populate your db with a fair amount of data, you can try:
+Once inside the container you can just run the scraping script from last section with the db_store option set to true. To populate your db with data from 2019 to current data, you can try:
 ```bash
-python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_date "2022-12-15" --db_store True
+python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_date $(date -d "yesterday" +%F) --db_store True
 ```
-note: coingecko's API is pretty sensible to request load, scrapy has been configured to push the limits, but the previous scraping will
-still take around 15 minutes to complete.
+Note: Coingecko's API is awfully sensible to request load so scrapy has been configured to avoid being blocked. On current configuration, without spending on an enterprise account, the scraping will take around eight hours to complete.
 
-3. **Scheduling and orchestration**
-For the next part, we are asked to add scheduling to run the scraper daily.
+3. **Scheduling**
+In order to keep our data updated we'll run the scraper everyday on yesterdays data.
 
-For the scheduling logic we're going to use airflow. But wait a minute, I hear you say: Isn't a simple CRON entry enough for this problem? Well, my shrewd friend, while its true that CRON is the most codingtime eficient and straightforward (and requested) tool for the job, it has the fatal flaw of being terrible boring compared to airflow.
-
-In any case, as per the current configuration, all you need to do is docker compose up, navigate to airflow-webserver in port 8080 and activate the dags.
+To schedule this job we'll use a kubernetes cronjob. To enable just run:
+```bash
+kubectl apply -f kubernetes/coingecko-cronjob.yaml
+```
 
 4. **Data Analysis**
-
-Data analysis is provided in the form of .sql files. The files are shared through compose with the scraping_database service. To test the queries you can access
-the postgres service and execute the sql files; having previously started docker compose run:
+SQL data analysis excercises solutions are provided in the form of .sql files. To test the queries you can access
+the postgres pod and execute the sql files. Inside the postgres container run:
 ```bash
-docker exec -it scraping_database bash
 psql postgresdb admin -f home/query1.sql
 psql postgresdb admin -f home/query2.sql
 ```
@@ -141,8 +150,6 @@ filter "christmas" when initializing docker compose. It can also be run on any l
 ```bash
 python src/twitter_streaming/twitter_tracker.py -t filter1 filter2 ... filtern
 ```
-
-TODO: Part 2 of excercise 4 involving spark processing is not implemented.
 
 
 ## Project Organization

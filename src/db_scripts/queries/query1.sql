@@ -1,3 +1,4 @@
+-- Get the average monthly price for every coin
 WITH monthly_data AS (
     SELECT
         coin_id,

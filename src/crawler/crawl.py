@@ -12,13 +12,12 @@ from scrapy.crawler import CrawlerProcess
 from src.crawler.settings import (
     CONCURRENT_REQUESTS,
     DOWNLOAD_DELAY,
+    DOWNLOADER_MIDDLEWARES,
     REQUEST_FINGERPRINTER_IMPLEMENTATION,
     ROBOTSTXT_OBEY,
     TWISTED_REACTOR,
 )
 from src.crawler.spiders.coingecko_spider import CoingeckoSpider
-from src.db_scripts.db_connection import PostgreDb
-from src.db_scripts.db_mappings import CoingeckoProcessedData
 from src.logger_definition import get_logger
 from src.utils import str2bool
 
@@ -80,7 +79,7 @@ if __name__ == "__main__":
         }
 
     # Create crawler process with configurations
-    # TODO: add automatic import from settings using scrapy functions
+    # TODO: Fix automatic import from settings using scrapy functions
     process = CrawlerProcess(
         settings={
             "CONCURRENT_REQUESTS": CONCURRENT_REQUESTS,
@@ -89,6 +88,7 @@ if __name__ == "__main__":
             "REQUEST_FINGERPRINTER_IMPLEMENTATION": REQUEST_FINGERPRINTER_IMPLEMENTATION,
             "TWISTED_REACTOR": TWISTED_REACTOR,
             "DOWNLOAD_DELAY": DOWNLOAD_DELAY,
+            "DOWNLOADER_MIDDLEWARES": DOWNLOADER_MIDDLEWARES,
         }
     )
 
@@ -101,12 +101,3 @@ if __name__ == "__main__":
     )
     logger.info(f"Launching crawl for {CoingeckoSpider.name} spiders")
     process.start()
-
-    # After process is finished, if we're saving to the database, we update the aggregated table
-    if args.db_store:
-        logger.info("Crawling finished, updating maxmin table")
-
-        db = PostgreDb()
-        minmax_df = db.create_maxmin_table()
-        # TODO: run directly on sql, eliminate weird pandas middle step
-        db.update_table_from_pandas(minmax_df, CoingeckoProcessedData)

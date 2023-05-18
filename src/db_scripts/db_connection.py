@@ -3,7 +3,6 @@
 """
 
 import pandas as pd
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -55,49 +54,3 @@ class PostgreDb:
             pd.DataFrame: output dataframe
         """
         return pd.read_sql(query_str, con=self.engine)
-
-    def update_table_from_pandas(
-        self, df: pd.DataFrame, declarative_base: sqlalchemy.orm.decl_api.DeclarativeMeta
-    ):
-        """Updates a given table with rows from a pandas dataframe
-
-        Args:
-            df (pd.DataFrame): dataframe to load
-            declarative_base (sqlalchemy.orm.decl_api.DeclarativeMeta): table to impact
-        """
-        for row_dict in df.to_dict(orient="records"):
-            with self.Session() as my_session:
-                my_session.begin()
-                my_session.merge(declarative_base(**row_dict))
-                my_session.commit()
-
-    def create_maxmin_table(self) -> pd.DataFrame:
-        """Queries the raw scrape database and creates the table 2 (min max) of the exam, returning
-        it as a pandas dataframe
-
-        Returns:
-            pd.DataFrame: pandas dataframe with processed table
-        """
-        maxmin_query = """
-            WITH monthly_data AS (
-                SELECT
-                    coin_id,
-                    CONCAT(CAST(DATE_PART('year', date) AS VARCHAR(4)), '-',
-                        CAST(DATE_PART('month', date) AS VARCHAR(2))) year_month,
-                    usd_price
-                FROM
-                    coingecko_scraped_data)
-            SELECT
-                coin_id,
-                year_month,
-                MAX(usd_price) usd_price_max,
-                MIN(usd_price) usd_price_min
-            FROM
-                monthly_data
-            GROUP BY
-                coin_id,
-                year_month;
-            """
-        minmax_df = self.execute_query(maxmin_query)
-
-        return minmax_df
