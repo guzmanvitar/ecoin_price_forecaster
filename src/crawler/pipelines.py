@@ -15,7 +15,7 @@ from src.db_scripts import db_connection, db_mappings
 
 class CoingeckoCrawlerDbPipeline:
     def __init__(self):
-        self.db = db_connection.PostgreDb()
+        self.db = db_connection.PostgresDb()
 
     def process_item(self, item, spider):
         self.storeitems(item)

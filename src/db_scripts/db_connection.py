@@ -10,7 +10,7 @@ from src.constants import POSTGRESDB_CON_STRING
 from src.db_scripts import db_mappings
 
 
-class PostgreDb:
+class PostgresDb:
     """Class containing database conection and querying functionality.
 
     Note that the query string imported from constants follows docker formating rules and uses
