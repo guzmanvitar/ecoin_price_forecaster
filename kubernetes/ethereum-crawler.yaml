@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ethereum-crawler-cronjob
+spec:
+  schedule: "0 23 * * *" # Run at 23:00 UTC every day
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ethereum-crawler
+              image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+              command: ["/bin/sh", "-c"]
+              args:
+                - src/bash/ethereum-cronjob.sh "$(date -d 'today' +%F)"
+          imagePullSecrets:
+            - name: gcr-json-key
+          restartPolicy: OnFailure
