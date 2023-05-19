@@ -10,7 +10,7 @@ from datetime import date, timedelta
 
 import scrapy
 
-from src.constants import API_DATE_FORMAT
+from src.constants import API_DATE_FORMAT, COIN_ID, COIN_PRICE, DATE, FULL_SCRAPE_DATA
 from src.crawler.items import CoingeckoItem
 
 
@@ -117,10 +117,10 @@ class CoingeckoSpider(scrapy.Spider):
         # Define and populate Item
         item = CoingeckoItem()
 
-        item["coin_id"] = response.meta["coin_id"]
-        item["date"] = response.meta["target_date"]
-        item["usd_price"] = usd_price
-        item["full_response"] = json_response
+        item[COIN_ID] = response.meta["coin_id"]
+        item[DATE] = response.meta["target_date"]
+        item[COIN_PRICE] = usd_price
+        item[FULL_SCRAPE_DATA] = json_response
 
         # Yield item to be stored in database
         yield item

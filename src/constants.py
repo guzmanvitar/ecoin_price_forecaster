@@ -31,3 +31,10 @@ POSTGRESDB_CON_STRING = "postgresql://admin:admin@scraping-database:5432/postgre
 
 # Coingecko API date format
 API_DATE_FORMAT = "%d-%m-%Y"
+
+
+# Columns
+COIN_ID = "coin_id"
+DATE = "date"
+COIN_PRICE = "usd_price"
+FULL_SCRAPE_DATA = "full_response"
