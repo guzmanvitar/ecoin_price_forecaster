@@ -22,6 +22,9 @@ COPY scrapy.cfg $PROJECT_DIR
 COPY ./src/ $PROJECT_DIR/src
 RUN mkdir $PROJECT_DIR/logs
 
+# Add execute permissions to bash scripts
+RUN chmod +x $PROJECT_DIR/src/bash/*
+
 # Install poetry dependencies
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
