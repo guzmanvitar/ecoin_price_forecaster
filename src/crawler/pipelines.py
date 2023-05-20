@@ -9,13 +9,13 @@ More info: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import json
 
-from src.constants import DATA_COINGECKO
+from src.constants import COIN_ID, DATA_COINGECKO, DATE
 from src.db_scripts import db_connection, db_mappings
 
 
 class CoingeckoCrawlerDbPipeline:
     def __init__(self):
-        self.db = db_connection.PostgreDb()
+        self.db = db_connection.PostgresDb()
 
     def process_item(self, item, spider):
         self.storeitems(item)
@@ -27,11 +27,11 @@ class CoingeckoCrawlerDbPipeline:
         item_dict = dict(item)
 
         # convert date to string
-        item_dict["date"] = str(item_dict["date"])
+        item_dict[DATE] = str(item_dict[DATE])
 
         # Local json dump
-        date = item_dict["date"]
-        coin = item_dict["coin_id"]
+        date = item_dict[DATE]
+        coin = item_dict[COIN_ID]
 
         write_path = DATA_COINGECKO / f"{coin}_{date}.json"
 
@@ -59,11 +59,11 @@ class CoingeckoCrawlerJsonPipeline:
         item_dict = dict(item)
 
         # convert date to string
-        item_dict["date"] = str(item_dict["date"])
+        item_dict[DATE] = str(item_dict[DATE])
 
         # Local json dump
-        date = item_dict["date"]
-        coin = item_dict["coin_id"]
+        date = item_dict[DATE]
+        coin = item_dict[COIN_ID]
 
         write_path = DATA_COINGECKO / f"{coin}_{date}.json"
 
