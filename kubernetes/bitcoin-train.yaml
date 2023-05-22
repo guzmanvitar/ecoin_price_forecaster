@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bitcoin-train-cronjob
+spec:
+  schedule: "0 1 * * *" # Run at 1:00 UTC every day
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: bitcoin-train
+              image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+              command:
+                ["python", "src/models/train_forecasters.py", "-c", "bitcoin"]
+              volumeMounts:
+                - name: models-volume
+                  mountPath: /home/fullstack_ml/models/forecasting
+          imagePullSecrets:
+            - name: gcr-json-key
+          restartPolicy: OnFailure
+          volumes:
+            - name: models-volume
+              persistentVolumeClaim:
+                claimName: models-volume-claim
