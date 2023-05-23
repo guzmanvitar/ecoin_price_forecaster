@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: ethereum-train
-              image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+              image: gcr.io/full-stack-ml-challenge/python-poetry:latest
               command:
                 ["python", "src/models/train_forecasters.py", "-c", "ethereum"]
               volumeMounts:

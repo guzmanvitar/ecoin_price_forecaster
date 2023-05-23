@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: python
-          image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+          image: gcr.io/full-stack-ml-challenge/python-poetry:latest
           command: ["python", "src/api/forecasting_api.py"]
           ports:
             - containerPort: 8000
