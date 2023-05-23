@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: python
-          image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+          image: gcr.io/full-stack-ml-challenge/python-poetry:latest
           command:
             - jupyter
             - lab

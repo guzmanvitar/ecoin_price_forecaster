@@ -1,6 +1,6 @@
-# Full stack ML challenge
+# Full Stack ML Challenge
 
-# Challenge description
+# Challenge Description
 A two-project machine learning challenge that aims to test skills involved in the development of end-to-end ML projects, from data extraction and model development to serving and deploying the solution in the cloud. The challenge consists of two projects:
 
 1. The first project of the machine learning challenge involves ecoin price forecasting. Participants will need to develop a machine learning model capable of predicting the price of a specific ecoin based on its historical price data and any other feature they deem useful. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future.
@@ -54,7 +54,7 @@ Once inside the shell we'll also run
 ```
 to setup git hooks.
 
-2. **Docker & kubernetes**
+2. **Docker & Kubernetes**
 
 Going one step further from poetry lock files, we want to have our code containerized to really ensure a deterministic
 build, no matter where we execute. This repo uses docker to containerize the code and kubernetes to orechestrate containers.
@@ -92,9 +92,9 @@ Whatever the method, once inside the container try for one simple test:
 python src/db_scripts/test_database_connection.py
 ```
 
-## Project 1: Ecoin price forecaster
+## Project 1: Ecoin Price Forecaster
 
-1. **Coingecko crawler**
+1. **Coingecko Crawler**
 The first part of the challenge consists on extracting a toy training dataset of historic coin prices from coingecko.
 
 For the crawler logic we're going in 'all guns a-blazing', using `scrapy` to get the data from the API.
@@ -112,7 +112,7 @@ python src/crawler/crawl.py --coin_id bitcoin --start_date "2017-12-15" --end_da
 ```
 Check the crawl script's `--help` for more information.
 
-2. **Database setup**
+2. **Database Setup**
 In the second part we keep building on the solution by adding a postgres database that stores the scraped prices.
 
 We are using sqlalchemy to define the postgres database, and docker/ kubernetes to run the db and connect the crawler with the storage.
@@ -122,24 +122,53 @@ the database is defined in kubernetes, to test this part, you'll need to create 
 
 Once inside the container you can just run the scraping script from last section with the db_store option set to true. To populate your db with data from 2019 to current data, you can try:
 ```bash
-python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_date $(date -d "yesterday" +%F) --db_store True
+python src/crawler/crawl.py --coin_id bitcoin --start_date "2019-01-01" --end_date $(date -d "today" +%F) --db_store True
 ```
 Note: Coingecko's API is awfully sensible to request load so scrapy has been configured to avoid being blocked. On current configuration, without spending on an enterprise account, the scraping will take around eight hours to complete.
 
-3. **Scheduling**
-In order to keep our data updated we'll run the scraper everyday on yesterdays data.
+3. **Crawler Scheduling**
+In order to keep our data updated we'll run the scraper everyday for bitcoin and ethereum coins.
 
-To schedule this job we'll use a kubernetes cronjob. To enable just run:
+To schedule this jobs we'll use kubernetes cronjobs. To enable just run:
 ```bash
-kubectl apply -f kubernetes/coingecko-cronjob.yaml
+kubectl apply -f kubernetes/bitcoin-crawler.yaml
+kubectl apply -f kubernetes/ethereum-crawler.yaml
 ```
 
 4. **Data Analysis**
-SQL data analysis excercises solutions are provided in the form of .sql files. To test the queries you can access
+Solution for the SQL data analysis excercises are provided in the form of .sql files. To test the queries you can access
 the postgres pod and execute the sql files. Inside the postgres container run:
 ```bash
 psql postgresdb admin -f home/query1.sql
 psql postgresdb admin -f home/query2.sql
+```
+
+5. **Model Training & Maintenance**
+A base class for the forecasting models was implemented in the `src.models.forecasters` module. The base class offers
+functionality for data loading and visualization.
+
+For our first forecaster I've implemented a standard SARIMA model. Note that the the ecoin timeseries don't present significant auto
+correlation on many lags. We're still using this model as a first aproximation and as a baseline for further modeling.
+
+To test the train models script for a coin, having accessed the python env container, run:
+`python src/models/train_forecasters.py -c <coin-name>`
+
+To keep the models up to date with the latest data a retrain cronjob was implemented for bitcoin and ethereum. A historic is
+also kept for rollback purposes. To start the cronjobs run:
+```bash
+kubectl apply -f kubernetes/bitcoin-train.yaml
+kubectl apply -f kubernetes/ethereum-train.yaml
+kubectl apply -f kubernetes/models-volume-claim.yaml
+```
+
+6. **Model Availalability**
+To save the forecasting models a REST API was built. The API has one endpoint that receives a coin and a target date and
+returns a json with all dates from the day after the model was trained to the target date as keys and forecasted prices
+as values.
+
+The API is also deployed as a kubernetes deployment; to start it run:
+```bash
+kubectl apply -f kubernetes/forecasting-api.yaml
 ```
 
 ## Project 2: Real time twitter sentiment analysis

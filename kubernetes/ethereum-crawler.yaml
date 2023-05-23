@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: ethereum-crawler
-              image: gcr.io/full-stack-ml-challenge/python-poetry:v1.1
+              image: gcr.io/full-stack-ml-challenge/python-poetry:latest
               command: ["/bin/sh", "-c"]
               args:
                 - src/bash/ethereum-cronjob.sh "$(date -d 'today' +%F)"
