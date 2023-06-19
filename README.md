@@ -1,25 +1,13 @@
 # Full Stack ML Challenge
 
 # Challenge Description
-A two-project machine learning challenge that aims to test skills involved in the development of end-to-end ML projects, from data extraction and model development to serving and deploying the solution in the cloud. The challenge consists of two projects:
-
-1. The first project of the machine learning challenge involves ecoin price forecasting. Participants will need to develop a machine learning model capable of predicting the price of a specific ecoin based on its historical price data and any other feature they deem useful. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future.
+A machine learning challenge focused on structured data and forecasting. Participants will need to develop a machine learning model capable of predicting the price of ecoins based on historical price data and any other feature they deem useful. The model should be able to handle multiple ecoins and predict their prices for a given time period in the future.
 
 Participants are required to develop a system for data collection and preprocessing, which includes scraping historic ecoin price data from coingecko and performing some data analysis using SQL. A toy sample of data is sufficient for the purposes of the challenge.
 
-The machine learning model should be designed to handle multiple ecoins and forecast their prices for a specified time period in the future. High performance in terms of accuracy is not expected for this challenge, participants should focus on building a complete end-to-end solution rather than optimizing the model's performance.
+High performance in terms of accuracy is not expected for this challenge, participants should focus on building a complete end-to-end solution rather than optimizing the model's performance.
 
-Finally, the solution should be deployed to a cloud environment, allowing for easy access and interaction with the trained model. Participants should consider the necessary infrastructure, deployment processes, and any additional components required for seamless integration and scalability.
-
-2. The NLP project involves building a sentiment analysis system to track sentiment in real-time from a set of Twitter topics. Participants will need to develop a machine learning model capable of classifying tweets based on their sentiment, categorizing them as positive, negative, or neutral.
-
-Participants are required to develop a system for data collection and preprocessing. This includes designing a mechanism to collect and process tweets in real time related to the specified topics from the Twitter API. The collected data should undergo preprocessing steps, such as text cleaning, tokenization, and removing noise, to ensure high-quality input for training the sentiment analysis model.
-
-Furthermore, the solution should be deployed to a cloud environment, enabling real-time sentiment analysis of incoming tweets. Participants should consider the necessary infrastructure, deployment processes, and any additional components required for seamless integration and scalability.
-
-To provide a comprehensive view of the sentiment analysis results, participants are also required to create a dashboard that visualizes the sentiment analysis outputs in real-time. The dashboard should provide an intuitive and user-friendly interface to monitor and analyze the sentiment trends related to the specified topics on Twitter.
-
-Throughout the project, participants will be evaluated based on their ability to build a complete end-to-end solution, including data collection, preprocessing, model development and training, cloud deployment, and real-time visualization. Emphasis will be placed on the overall system architecture, data quality, and the effectiveness of the sentiment analysis model.
+The solution should be deployed to a cloud environment, allowing for easy access and interaction with the trained model. Participants should consider the necessary infrastructure, deployment processes, and any additional components required for seamless integration and scalability.
 
 The challenge is partially based on a [Mutt Data](https://muttdata.ai/) challenge. The base structure of the repo is adapted from Cookie Cutter Data Science and from [Tryolab's](https://tryolabs.com/) `project-base` template.
 
@@ -92,7 +80,7 @@ Whatever the method, once inside the container try for one simple test:
 python src/db_scripts/test_database_connection.py
 ```
 
-## Project 1: Ecoin Price Forecaster
+## Ecoin Price Forecaster
 
 1. **Coingecko Crawler**
 The first part of the challenge consists on extracting a toy training dataset of historic coin prices from coingecko.
@@ -171,16 +159,6 @@ The API is also deployed as a kubernetes deployment; to start it run:
 kubectl apply -f kubernetes/forecasting-api.yaml
 ```
 
-## Project 2: Real time twitter sentiment analysis
-1. **Twitter streaming**
-
-A twitter streaming script that checks for twits based on a list of filters is implemented using tweepy. The script runs automatically with the
-filter "christmas" when initializing docker compose. It can also be run on any list of filters locally through:
-```bash
-python src/twitter_streaming/twitter_tracker.py -t filter1 filter2 ... filtern
-```
-
-
 ## Project Organization
 This is not comprehensive.
 
@@ -203,10 +181,9 @@ Main folder and file structure for the project (the tree is non comprehensive)
     │   │
     │   ├── db_scripts     <- Database related scripts
     │   │
-    │   ├── crawler        <- Scripts to scrape data.
+    │   └── crawler        <- Scripts to scrape data.
     │   │
-    │   └── twitter_
-    │          streaming.  <- Scripts related to twitter stream functionality
+    │   └── models         <- Scripts related forecasting models
     │
     │
     ├── pyproject.toml     <- File to manage dependencies and some tool's configurations.
