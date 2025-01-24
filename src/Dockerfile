@@ -1,14 +1,14 @@
 FROM python:3.10.9
 
 # Export env variables
-ENV PROJECT fullstack_ml
-ENV HOME /home
+ENV PROJECT=fullstack_ml
+ENV HOME=/home
 
 # Install poetry
 RUN pip install poetry>=1.0.0
 
 # create a project directory inside project home
-ENV PROJECT_DIR $HOME/$PROJECT
+ENV PROJECT_DIR=$HOME/$PROJECT
 RUN mkdir $PROJECT_DIR
 
 WORKDIR $PROJECT_DIR
@@ -33,4 +33,4 @@ RUN poetry config virtualenvs.create false \
 EXPOSE 8787
 
 # define password for jupyter
-ENV JUPYTER_TOKEN eureka
+ENV JUPYTER_TOKEN=eureka
