@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: ethereum-crawler
-              image: gcr.io/full-stack-ml-challenge/python-poetry:latest
+              image: southamerica-east1-docker.pkg.dev/ecoin-price-forecaster/ecoin-price-forecaster/ecoin-forecaster-base:latest
               command: ["/bin/sh", "-c"]
               args:
                 - src/bash/ethereum-cronjob.sh "$(date -d 'today' +%F)"

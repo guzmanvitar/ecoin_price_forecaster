@@ -14,13 +14,20 @@ spec:
     spec:
       containers:
         - name: python
-          image: gcr.io/full-stack-ml-challenge/python-poetry:latest
+          image: southamerica-east1-docker.pkg.dev/ecoin-price-forecaster/ecoin-price-forecaster/ecoin-forecaster-base:latest
           command: ["python", "src/api/forecasting_api.py"]
           ports:
             - containerPort: 8000
           volumeMounts:
             - name: models-volume
               mountPath: /home/fullstack_ml/models/forecasting
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
       imagePullSecrets:
         - name: gcr-json-key
       volumes:

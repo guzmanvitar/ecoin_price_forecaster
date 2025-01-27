@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: gcr.io/full-stack-ml-challenge/my-postgres:v1
+          image: postgres:12
           env:
             - name: POSTGRES_USER
               value: admin
@@ -42,8 +42,13 @@ spec:
           volumeMounts:
             - name: db-volume
               mountPath: /var/lib/postgresql/data
-      imagePullSecrets:
-        - name: gcr-json-key
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
       volumes:
         - name: db-volume
           persistentVolumeClaim:

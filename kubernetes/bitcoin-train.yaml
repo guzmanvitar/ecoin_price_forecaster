@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: bitcoin-train
-              image: gcr.io/full-stack-ml-challenge/python-poetry:latest
+              image: southamerica-east1-docker.pkg.dev/ecoin-price-forecaster/ecoin-price-forecaster/ecoin-forecaster-base:latest
               command:
                 ["python", "src/models/train_forecasters.py", "-c", "bitcoin"]
               volumeMounts:

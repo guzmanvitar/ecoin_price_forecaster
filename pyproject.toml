@@ -12,7 +12,6 @@ python = "^3.10"
 logging = "^0.4.9.6"
 pathlib = "^1.0.1"
 requests = "^2.28.1"
-psycopg2 = "^2.9.5"
 sqlalchemy = "^1.4.45"
 scrapy = "^2.7.1"
 pandas = "^1.5.2"
@@ -23,6 +22,7 @@ scikit-learn = "^1.2.2"
 fastapi = "^0.95.2"
 uvicorn = "^0.22.0"
 fastapi-utils = "^0.2.1"
+psycopg2-binary = "^2.9.10"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -46,5 +46,5 @@ profile = "black"
 skip = [".venv"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core=1.0.0"]
 build-backend = "poetry.core.masonry.api"

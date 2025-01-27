@@ -23,7 +23,7 @@
     //
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+        "source.organizeImports": "explicit"
     },
     "editor.rulers": [
         100 // if changing line length, also do it in .flake8 and pyproject.toml's [tool.black] section
